@@ -9,5 +9,6 @@
 
 
 ### ***Diagrama de Arquitectura de la Ventiladora Inteligente***
+<p align="center">
 <img src="diagrams/ARQUITECTURA _DE _VENTILADORA.jpg" width="600">
 
