@@ -766,15 +766,40 @@ void loop() {
 | **Resultado obtenido** | Motor responde inmediatamente, PWM mapeado correctamente (75 → 214) |
 | **Estado** |  Aprobado |
  
-#### CF-04 — Mapeo PWM Mínimo (30%)
- 
-| Campo | Descripción |
+#### CF-04 — Mapeo PWM Minimo (30%)
+
+| Campo | Descripcion |
 |---|---|
 | **Objetivo** | Verificar que el motor arranca al 1% de solicitud (PWM = 77) y se apaga al 0% (PWM = 0) |
-| **Procedimiento** | Enviar speed = 0, 1, 5, 100 en secuencia |
-| **Resultado esperado** | 0% = PWM 0 (parado), 1% = PWM 77 (arranque), 100% = PWM 255 |
+| **Procedimiento** | 1. Enviar speed = 0 y verificar que el motor esta completamente detenido. 2. Enviar speed = 1 y verificar que el motor comienza a girar. 3. Enviar speed = 5 y verificar que el motor gira a baja velocidad. 4. Enviar speed = 50 y verificar velocidad media. 5. Enviar speed = 100 y verificar maxima velocidad. |
+| **Resultado esperado** | 0% = PWM 0 (parado), 1% = PWM 77 (arranque), 5% = PWM 86 (baja velocidad), 50% = PWM 166 (media), 100% = PWM 255 (maximo) |
 | **Resultado obtenido** | 0% = parado, 1% = PWM 77, 5% = PWM 86, 50% = PWM 166, 100% = 255 |
-| **Estado** |  Aprobado |
+| **Estado** | Aprobado |
+
+**Analisis tecnico del umbral minimo:**
+
+Durante las pruebas de funcionamiento del motor N30 Mini DC, se identifico que el motor no presentaba reaccion alguna en umbrales de PWM inferiores al 30% (valores de PWM entre 0 y 76). Este comportamiento se debe a las caracteristicas fisicas propias del motor, especificamente a la inercia que debe vencer para iniciar el movimiento. En motores DC pequenos como el N30, existe un umbral minimo de voltaje necesario para generar el torque suficiente que supere la friccion estatica y la resistencia mecanica inicial.
+
+Para solucionar este problema sin afectar la experiencia del usuario, se implemento un mapeo inteligente de PWM que garantiza que el motor siempre opere por encima del 30% de su ciclo de trabajo cuando se solicita cualquier valor mayor a cero. De esta manera:
+
+- Cuando el usuario solicita 0%, el motor recibe PWM 0 y permanece completamente apagado.
+- Cuando el usuario solicita entre 1% y 100%, el sistema mapea linealmente ese rango desde PWM 77 (30% del ciclo de trabajo) hasta PWM 255 (100% del ciclo de trabajo).
+
+Esto significa que el usuario dispone de un rango efectivo de control del 70% (del 30% al 100% real del PWM), distribuido proporcionalmente en la escala de 1-100% que ve en la interfaz. El usuario selecciona un porcentaje y el sistema lo convierte al valor de PWM correspondiente dentro del rango funcional del motor, manteniendo coherencia entre lo solicitado y lo percibido.
+
+**Formula de mapeo implementada:**
+
+**Tabla de equivalencias:**
+
+| Solicitud usuario | PWM real | Porcentaje real del ciclo | Comportamiento observado |
+|---|---|---|---|
+| 0% | 0 | 0% | Motor parado |
+| 1% | 77 | 30% | Motor arranca, minimo funcional |
+| 5% | 86 | 34% | Giro lento pero estable |
+| 25% | 121 | 47% | Velocidad baja |
+| 50% | 166 | 65% | Velocidad media |
+| 75% | 211 | 83% | Velocidad alta |
+| 100% | 255 | 100% | Maxima velocidad |
  
 #### CF-05 — Reporte de Temperatura por Umbral
  
@@ -994,15 +1019,23 @@ build_flags =
 ### Configuración AWS IoT Core
  
 **Política IoT necesaria:**
-
+ 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": "*",
-      "Resource": "*"
+      "Action": [
+        "iot:Connect",
+        "iot:Publish",
+        "iot:Receive",
+        "iot:Subscribe"
+      ],
+      "Resource": [
+        "arn:aws:iot:us-east-1:ACCOUNT_ID:client/Esp32Ventilador",
+        "arn:aws:iot:us-east-1:ACCOUNT_ID:topic/$aws/things/Esp32Ventilador/shadow/*"
+      ]
     }
   ]
 }
