@@ -727,7 +727,7 @@ void loop() {
 | **Procedimiento** | 1. Alimentar el ESP32 / 2. Observar monitor serial (115200 baud) / 3. Observar pantalla OLED |
 | **Resultado esperado** | Mensaje "WiFi OK" en OLED, dirección IP en monitor serial |
 | **Resultado obtenido** | Conexión exitosa en menos de 5 segundos, IP asignada: `192.168.x.x` |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CF-02 — Conexión AWS IoT Core
  
@@ -738,7 +738,7 @@ void loop() {
 | **Procedimiento** | 1. Esperar después de conexión WiFi / 2. Observar monitor serial / 3. Verificar en AWS IoT Console |
 | **Resultado esperado** | `"Connected"` en serial, suscripción al tópico delta confirmada |
 | **Resultado obtenido** | Conexión TLS exitosa, suscrito a `$aws/things/Esp32Ventilador/shadow/update/delta` |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CF-03 — Recepción de Delta y Control de Motor
  
@@ -749,7 +749,7 @@ void loop() {
 | **Procedimiento** | Publicar `{"state":{"desired":{"speed":75}}}` desde AWS IoT Console |
 | **Resultado esperado** | Motor gira al 75% (PWM ≈ 214), OLED muestra `"Motor: 75%"` |
 | **Resultado obtenido** | Motor responde inmediatamente, PWM mapeado correctamente (75 → 214) |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CF-04 — Mapeo PWM Mínimo (30%)
  
@@ -759,7 +759,7 @@ void loop() {
 | **Procedimiento** | Enviar speed = 0, 1, 5, 100 en secuencia |
 | **Resultado esperado** | 0% = PWM 0 (parado), 1% = PWM 77 (arranque), 100% = PWM 255 |
 | **Resultado obtenido** | 0% = parado, 1% = PWM 77, 5% = PWM 86, 50% = PWM 166, 100% = 255 |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CF-05 — Reporte de Temperatura por Umbral
  
@@ -767,7 +767,7 @@ void loop() {
 |---|---|
 | **Objetivo** | Verificar que solo se reporta temperatura al Shadow cuando cambia ≥ 0.5 °C |
 | **Resultado obtenido** | Reportes cada 0.5 °C de cambio, sin publicaciones redundantes |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CF-06 — Reporte Inmediato de Velocidad
  
@@ -776,7 +776,7 @@ void loop() {
 | **Objetivo** | Verificar que al recibir un delta de velocidad, se reporta sin esperar el ciclo de 2s |
 | **Resultado esperado** | Update publicado en el siguiente ciclo del loop (máximo 2 segundos) |
 | **Resultado obtenido** | Update publicado ~100ms después del delta |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 ---
  
@@ -788,7 +788,7 @@ void loop() {
 |---|---|
 | **Objetivo** | Verificar reconexión automática ante pérdida de WiFi o MQTT |
 | **Resultado obtenido** | Reconexión WiFi en ~8s, reconexión MQTT en ~3s |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CNF-02 — Rendimiento del Loop Principal
  
@@ -797,7 +797,7 @@ void loop() {
 | **Objetivo** | Verificar que el loop mantiene el intervalo de actualización sin bloqueos |
 | **Resultado esperado** | Actualización consistente cada ~2000ms, variación ≤ ±50ms |
 | **Resultado obtenido** | Intervalo promedio 2000ms, desviación máxima ±30ms |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CNF-03 — Manejo de Errores del Sensor
  
@@ -805,7 +805,7 @@ void loop() {
 |---|---|
 | **Objetivo** | Verificar que el sistema no falla si el DHT11 da error de lectura |
 | **Resultado obtenido** | Muestra `"Sensor error"`, motor sigue operable vía Shadow, lectura se recupera al reconectar |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CNF-04 — Uso de Memoria RAM
  
@@ -813,7 +813,7 @@ void loop() {
 |---|---|
 | **Objetivo** | Verificar que no hay fugas de memoria |
 | **Resultado obtenido** | Heap inicial: ~210 KB, después de 1 hora: ~205 KB — variación normal por fragmentación |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CNF-05 — Latencia de Respuesta
  
@@ -822,7 +822,7 @@ void loop() {
 | **Objetivo** | Medir tiempo desde que se publica un delta hasta que el motor responde |
 | **Resultado esperado** | Latencia menor a 2 segundos |
 | **Resultado obtenido** | Latencia promedio: 800ms |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 #### CNF-06 — Consumo de Ancho de Banda
  
@@ -830,7 +830,7 @@ void loop() {
 |---|---|
 | **Objetivo** | Verificar que el reporte condicional reduce el tráfico MQTT |
 | **Resultado obtenido** | 0 publicaciones con temperatura estable; solo publica al recibir deltas de velocidad |
-| **Estado** | ✅ Aprobado |
+| **Estado** |  Aprobado |
  
 ---
  
@@ -840,16 +840,16 @@ void loop() {
  
 | Requisito Funcional | Estado | Observación |
 |---|---|---|
-| Conexión WiFi con credenciales | ✅ Cumplido | Reconexión automática ante fallos |
-| Conexión AWS IoT Core con TLS mutuo | ✅ Cumplido | Certificados X.509 funcionando correctamente |
-| Sincronización bidireccional del Device Shadow | ✅ Cumplido | Recibe `desired.speed` y reporta `reported` |
-| Control de velocidad del motor por PWM | ✅ Cumplido | Mapeo: 0% = PWM 0, 1% = PWM 77, 100% = PWM 255 |
-| Lectura de temperatura DHT11 | ✅ Cumplido | Precisión de 0.1 °C (un decimal) |
-| Reporte condicional de temperatura (ΔT ≥ 0.5 °C) | ✅ Cumplido | Reduce tráfico MQTT innecesario |
-| Reporte inmediato tras cambio de velocidad | ✅ Cumplido | Flag `shadowChanged` asegura reporte sin esperar ciclo |
-| Visualización en OLED | ✅ Cumplido | Temperatura, velocidad, barra gráfica, mensajes de estado |
-| Manejo de errores de sensor | ✅ Cumplido | Muestra `"Sensor error"` sin detener el sistema |
-| Solicitud de shadow al conectar | ✅ Cumplido | Sincronización inicial del estado deseado al arrancar |
+| Conexión WiFi con credenciales |  Cumplido | Reconexión automática ante fallos |
+| Conexión AWS IoT Core con TLS mutuo |  Cumplido | Certificados X.509 funcionando correctamente |
+| Sincronización bidireccional del Device Shadow |  Cumplido | Recibe `desired.speed` y reporta `reported` |
+| Control de velocidad del motor por PWM |  Cumplido | Mapeo: 0% = PWM 0, 1% = PWM 77, 100% = PWM 255 |
+| Lectura de temperatura DHT11 |  Cumplido | Precisión de 0.1 °C (un decimal) |
+| Reporte condicional de temperatura (ΔT ≥ 0.5 °C) |  Cumplido | Reduce tráfico MQTT innecesario |
+| Reporte inmediato tras cambio de velocidad |  Cumplido | Flag `shadowChanged` asegura reporte sin esperar ciclo |
+| Visualización en OLED |  Cumplido | Temperatura, velocidad, barra gráfica, mensajes de estado |
+| Manejo de errores de sensor |  Cumplido | Muestra `"Sensor error"` sin detener el sistema |
+| Solicitud de shadow al conectar |  Cumplido | Sincronización inicial del estado deseado al arrancar |
  
 ---
  
@@ -881,12 +881,12 @@ PWM = 77 + (targetPercent - 1) × 178 / 99
  
 | Requisito | Estado | Observación |
 |---|---|---|
-| Estabilidad operativa | ✅ Cumplido | Funcionamiento continuo >1 hora sin reinicios |
-| Tolerancia a fallos de red | ✅ Cumplido | Reconexión automática WiFi y MQTT |
-| Modularidad del código | ✅ Cumplido | 6 clases independientes con responsabilidades claras |
-| Eficiencia de comunicación | ✅ Cumplido | Solo reporta cuando hay cambios significativos |
-| Rendimiento del loop | ✅ Cumplido | Control no bloqueante con `millis()`, sin `delay()` |
-| Gestión de memoria | ✅ Cumplido | Sin fugas detectadas, uso de `StaticJsonDocument` |
+| Estabilidad operativa |  Cumplido | Funcionamiento continuo >1 hora sin reinicios |
+| Tolerancia a fallos de red |  Cumplido | Reconexión automática WiFi y MQTT |
+| Modularidad del código |  Cumplido | 6 clases independientes con responsabilidades claras |
+| Eficiencia de comunicación |  Cumplido | Solo reporta cuando hay cambios significativos |
+| Rendimiento del loop |  Cumplido | Control no bloqueante con `millis()`, sin `delay()` |
+| Gestión de memoria |  Cumplido | Sin fugas detectadas, uso de `StaticJsonDocument` |
  
 ---
  
