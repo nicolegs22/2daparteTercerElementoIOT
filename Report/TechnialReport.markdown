@@ -807,13 +807,7 @@ void loop() {
 | **Resultado obtenido** | Muestra `"Sensor error"`, motor sigue operable vía Shadow, lectura se recupera al reconectar |
 | **Estado** |  Aprobado |
  
-#### CNF-04 — Uso de Memoria RAM
- 
-| Campo | Descripción |
-|---|---|
-| **Objetivo** | Verificar que no hay fugas de memoria |
-| **Resultado obtenido** | Heap inicial: ~210 KB, después de 1 hora: ~205 KB — variación normal por fragmentación |
-| **Estado** |  Aprobado |
+
  
 #### CNF-05 — Latencia de Respuesta
  
