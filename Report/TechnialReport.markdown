@@ -93,12 +93,25 @@ Controlar remotamente una ventiladora mediante comandos de voz a través de Alex
   <img src="diagrams/Diagrama_Electronico.jpeg" width="600" alt="Diagrama Eléctrico Ventiladora Inteligente"/>
 </p>
 
-
 ### ***Diagrama de Arquitectura de la Ventiladora Inteligente***
 <p align="center">
 <img src="diagrams/ARQUITECTURA _DE _VENTILADORA.jpg" width="600">
 
+### ***Diagrama de Bloques la Ventiladora Inteligente***
+<p align="center">
+<img src="diagrams/diagarama de bloques.png" width="600">
 
+### ***Diagrama de Clases de la Ventiladora Inteligente***
+<p align="center">
+<img src="diagrams/DIAGRAMA DE CLASES.png" width="600">
+
+### ***Diagrama de Secuencias de la Ventiladora Inteligente***
+<p align="center">
+<img src="diagrams/DIAGRAMA DE SECUENCIA.png" width="600">
+
+### ***Diagrama de Arquitectura de la Ventiladora Inteligente***
+<p align="center">
+<img src="diagrams/DIAGRAMA ALEXA SKILL.png" width="600">
 
 # Documentación del Sistema IoT de Control de Ventilador
 ## ESP32 + DHT11 + SSD1306 + L298N con AWS IoT Shadow
