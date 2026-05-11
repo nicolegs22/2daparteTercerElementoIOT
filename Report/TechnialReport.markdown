@@ -994,23 +994,15 @@ build_flags =
 ### Configuración AWS IoT Core
  
 **Política IoT necesaria:**
- 
+
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
       "Effect": "Allow",
-      "Action": [
-        "iot:Connect",
-        "iot:Publish",
-        "iot:Receive",
-        "iot:Subscribe"
-      ],
-      "Resource": [
-        "arn:aws:iot:us-east-1:ACCOUNT_ID:client/Esp32Ventilador",
-        "arn:aws:iot:us-east-1:ACCOUNT_ID:topic/$aws/things/Esp32Ventilador/shadow/*"
-      ]
+      "Action": "*",
+      "Resource": "*"
     }
   ]
 }
