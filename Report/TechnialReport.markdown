@@ -904,11 +904,10 @@ PWM = 77 + (targetPercent - 1) × 178 / 99
  
 ### Mejoras Técnicas Prioritarias
  
-**OTA (Over-The-Air) Updates** — Permitir actualizaciones de firmware sin conexión física por USB, usando AWS IoT Jobs para gestionar despliegues y firmando el firmware para verificar integridad.
+
  
 **Lectura de humedad del DHT11** — El sensor es capaz de medir humedad relativa. Reportar este valor al Device Shadow y mostrarlo en la pantalla OLED.
- 
-**Control bidireccional del motor** — Actualmente IN1 está en HIGH fijo. Usar también IN2 para control de dirección y añadir el campo `"direction"` al Shadow.
+
  
 ### Mejoras de Seguridad
  
@@ -916,16 +915,13 @@ PWM = 77 + (targetPercent - 1) × 178 / 99
  
 ### Mejoras de Arquitectura
  
-**FreeRTOS Tasks** — Crear tareas separadas para comunicación MQTT, lectura de sensores y actualización de pantalla. Aprovecha el procesador dual-core del ESP32 y permite priorizar tareas críticas.
- 
+
 **Watchdog Timer** — Configurar el watchdog por hardware para evitar bloqueos permanentes que requieran reset manual.
  
-**Persistencia de estado en NVS** — Guardar la última velocidad configurada en memoria no volátil para restaurar el estado tras un reinicio.
- 
+
 ### Mejoras de Interfaz
  
-**Dashboard web local** — Implementar un servidor HTTP en el ESP32 con interfaz web responsive: temperatura actual, control de velocidad con slider, historial. Funciona independientemente de la conexión a AWS.
- 
+
 **Mejoras en pantalla OLED** — Añadir iconos de estado de conexión (WiFi, AWS), pantallas rotativas y fuente más grande para la temperatura.
  
 ---
