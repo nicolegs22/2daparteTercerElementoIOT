@@ -55,9 +55,8 @@ Controlar remotamente una ventiladora mediante comandos de voz a través de Alex
 ### 5. Seguridad y Manejo de Errores
 | ID | Requerimiento | Descripción |
 | :--- | :--- | :--- |
-| **RF-16** | Límite de velocidad mínima al encender | Si se intenta encender con velocidad < 35%, automáticamente establecer al 35% y notificar al usuario. |
+| **RF-16** | Límite de velocidad mínima al encender | Si se intenta encender empezara a funcionar de inmediatamente. |
 | **RF-17** | Apagado cuando velocidad = 0 | Si la velocidad se establece en 0%, interpretar automáticamente como un comando de apagado. |
-| **RF-18** | Timeout de comunicación | Si AWS IoT no responde en 5 segundos, Alexa debe decir: "La ventiladora no está respondiendo en este momento, intenta de nuevo más tarde". |
 | **RF-19** | Notificar cambios realizados | Cada comando exitoso debe ser confirmado: "Ventiladora encendida al 50%", "Velocidad ajustada al 75%". |
 
 ---
