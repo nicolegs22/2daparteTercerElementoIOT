@@ -98,6 +98,81 @@ Controlar remotamente una ventiladora mediante comandos de voz a través de Alex
 <p align="center">
 <img src="diagrams/ARQUITECTURA _DE _VENTILADORA.jpg" width="600">
 
+
+### Diagrama de Bloques del Sistema
+
+```mermaid
+graph LR
+    subgraph PERIFERICOS["PERIFERICOS"]
+        direction TB
+        E1["Sensor DHT11<br/>Temperatura"]
+        E2["OLED SSD1306<br/>0.96 pulgadas"]
+        E3["Driver L298N<br/>Puente H"]
+        E4["Motor N30<br/>Ventilador DC"]
+    end
+
+    subgraph HARDWARE["HARDWARE"]
+        direction TB
+        D1["GPIO 4<br/>One-Wire"]
+        D2["GPIO 21,22<br/>I2C Bus"]
+        D3["GPIO 18<br/>GPIO 5<br/>LEDC PWM"]
+    end
+
+    subgraph ESP32["ESP32 DEVKIT V1"]
+        subgraph SOFTWARE["Software OOP"]
+            direction TB
+            C1["WiFiManager<br/>Conexion WiFi"]
+            C2["AWSShadow<br/>MQTT Client"]
+            C3["Sensor<br/>DHT11 Reader"]
+            C4["Motor<br/>PWM Controller"]
+            C5["Display<br/>OLED Manager"]
+        end
+    end
+
+    subgraph AWS["AWS CLOUD"]
+        direction TB
+        B1["AWS IoT Core<br/>Device Shadow"]
+        B2["Alexa Skills Kit<br/>Interaction Model"]
+        B3["AWS Lambda<br/>Skill Function"]
+    end
+
+    subgraph USUARIO["USUARIO"]
+        direction TB
+        A1["AWS Console"]
+        A2["Alexa App / Echo"]
+    end
+
+    PERIFERICOS --> HARDWARE
+    E1 -->|"DATA"| D1
+    E2 -->|"SDA/SCL"| D2
+    E3 -->|"IN1/ENA"| D3
+    E4 -->|"OUT1/OUT2"| E3
+
+    HARDWARE --> ESP32
+    D1 --> C3
+    D2 --> C5
+    D3 --> C4
+
+    SOFTWARE --> AWS
+    C2 <-->|"MQTT/TLS:8883"| B1
+    C1 --> C2
+    C3 --> C2
+    C4 --> C2
+    C5 --> C2
+
+    AWS --> USUARIO
+    B2 --> B3
+    B3 --> B1
+    A1 --> B1
+    A2 --> B2
+
+    style PERIFERICOS fill:#fce4ec,stroke:#c62828,stroke-width:2px
+    style HARDWARE fill:#fff8e1,stroke:#f57f17,stroke-width:2px
+    style ESP32 fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
+    style SOFTWARE fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px
+    style AWS fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style USUARIO fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    
 # Documentación del Sistema IoT de Control de Ventilador
 ## ESP32 + DHT11 + SSD1306 + L298N con AWS IoT Shadow
 
