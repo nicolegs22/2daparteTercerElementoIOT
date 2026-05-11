@@ -1096,9 +1096,6 @@ mosquitto_sub \
 | OOP | Object-Oriented Programming — paradigma basado en objetos y clases |
 | OLED | Organic Light Emitting Diode — pantalla que emite luz propia sin retroiluminación |
 | I2C | Inter-Integrated Circuit — bus de comunicación serial de dos hilos (SDA/SCL) |
-| NVS | Non-Volatile Storage — almacenamiento persistente en el ESP32 |
-| OTA | Over-The-Air — actualización de firmware de forma inalámbrica |
-| FreeRTOS | Sistema operativo en tiempo real para microcontroladores, incluido en ESP32 |
 | Watchdog | Mecanismo de seguridad que reinicia el sistema si detecta un bloqueo |
  
 ---
